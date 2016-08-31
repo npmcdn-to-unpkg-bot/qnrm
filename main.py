@@ -6,6 +6,7 @@ from qiniu_handler import QiniuHandler
 def make_app():
     return tornado.web.Application([
         (r"/", MainHandler),
+        (r'/file', QiniuHandler),
         (r'/file/(.*)', QiniuHandler)
     ])
 
