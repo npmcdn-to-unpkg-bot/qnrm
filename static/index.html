@@ -1,0 +1,28 @@
+<html>
+
+<head>
+  <title>QNRM</title>
+  <link rel="stylesheet" href="/static/main.css" type="text/css" />
+</head>
+
+<body>
+  <div id="app">
+    <div class="image-container">
+      <div class="preview" v-for="item in list">
+        <img class="image" src="{{item|preview}}" />
+      </div>
+    </div>
+    <uploader></uploader>
+  </div>
+  <script id="uploader-template" type="text/html">
+    <div class="upload-container" v-on:drop="uploadFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
+      <div v-for="item in uploadQueue">{{item.name}}</div>
+    </div>
+  </script>
+  <script src="https://npmcdn.com/vue@1.0.26/dist/vue.min.js"></script>
+  <script src="https://npmcdn.com/vue-resource@0.9.3/dist/vue-resource.min.js"></script>
+  <script src="/static/uploader.js"></script>
+  <script src="/static/main.js"></script>
+</body>
+
+</html>
