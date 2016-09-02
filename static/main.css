@@ -5,35 +5,103 @@ html,body{
   padding: 0px;
   overflow: hidden;
 }
+*{
+  box-sizing: border-box;
+  font-family: "Heiti SC","Microsoft YaHei";
+  font-size: 10px;
+}
 
-.image-container{
+.list-container{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   padding: 10px;
-  width: 90%;
-  height: 30%;
-  margin: 20px auto;
   border: 1px solid #eee;
-  border-radius: 3px;
+  background-color: rgba(0,0,0,.4);
+  overflow: auto;
 }
 
 .preview{
-  width: 50px;
-  height: 50px;
+  position: relative;
+  width: 180px;
   overflow: hidden;
-  border: 1px solid #eee;
-  padding: 5px;
   margin: 5px;
   float: left;
+  text-align: center;
 }
-.preview>.image{
-  width: 40px;
-  margin: auto 0px;
-  margin: 0px auto;
+.preview>.image-wrapper{
+  width: 180px;
+  height: 135px;
+  overflow: hidden;
+  box-shadow: inset 1px 1px 1px rgba(0,0,0,.25)
 }
-.upload-container{
-  padding: 10px;
-  width: 90%;
-  height: 40%;
-  margin: 5px auto;
-  border: 1px solid #eee;
-  border-radius: 3px;
+.preview>.image-wrapper>.image{
+  width: 100%;
+  height: 100%;
+}
+.preview>.filename{
+  margin-top:10px;
+  bottom: 0px;
+  left: 2px;
+  right: 2px;
+  font-size: 10px;
+  line-height: 16px;
+  color: #fff;
+  text-align: center;
+}
+
+.wait-list-container{
+  width: 300px;
+  height: 200px;
+  background: #fff;
+  z-index: 100;
+  clear: both;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 5px rgba(65, 99, 119, 0.2);
+}
+.wait-list-container>.toggle{
+  height: 30px;
+  line-height: 30px;
+  padding: 0 10px;
+  border-bottom: 1px solid #eee;
+  font-weight:blod;
+}
+.wait-list-container>.item>progress{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  display: block;
+}
+.wait-list-container>.item{
+  position: relative;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #eee;
+  color: #999;
+}
+.wait-list-container>.item>.filename{
+  padding-left: 10px;
+  position: absolute;
+  color: #fff;
+}
+.wait-list-container>.item>.progress{
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: #86adad;
+  box-shadow:5px 5px 5px #769d9d inset
+}
+
+.wait-list-container>.item>.progress>.loaded{
+  width: 0%;
+  height: 100%;
+  background-color: #8468ab;
+  transition: all .3s ease;
 }

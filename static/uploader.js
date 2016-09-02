@@ -1,14 +1,25 @@
 var VueUploader = {}
 
 VueUploader.install = function (Vue, options) {
-  Vue.prototype.$upload = function (method, url,formData, file,uploadComplete,uploadProgress,uploadFailed) {
-   
-    var xhr = new XMLHttpRequest()
-    xhr.upload.addEventListener("progress", uploadProgress, false)
-    xhr.addEventListener("load", uploadComplete, false)
-    xhr.addEventListener("error", uploadFailed, false)
-    //xhr.addEventListener("abort", uploadCanceled, false)
-    xhr.open('put','/file')
-    xhr.send(formData)
+  Vue.prototype.$upload = function (method, url, formData, progressChanged) {
+    return new Promise(function (resolve, reject) {
+      var xhr = new XMLHttpRequest()
+      xhr.open(method, url)
+      xhr.upload.onprogress = function (event) {
+        if (event.lengthComputable) {
+          var progress = (event.loaded / event.total * 100 | 0)
+          if (progressChanged) {
+            progressChanged(progress)
+          }
+        }
+      }
+      xhr.onload = function (event) {
+        resolve(event)
+      }
+      xhr.error = function (event) {
+        reject(event)
+      }
+      xhr.send(formData)
+    })
   }
 }

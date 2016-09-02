@@ -7,18 +7,31 @@
 
 <body>
   <div id="app">
-    <div class="image-container">
-      <div class="preview" v-for="item in list">
-        <img class="image" src="{{item|preview}}" />
+    <div class="list-container" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
+
+      <div class="preview" v-for="item in list|orderBy  'putTime' -1" :transition="'expand'">
+        <div class="image-wrapper">
+          <img class="image" src="{{item|filePreview}}" />
+        </div>
+        <div class="filename">{{item.key}}</div>
       </div>
+
     </div>
-    <uploader></uploader>
+    <div class="wait-list-container">
+        <div class="toggle">
+           {{uploadList.length}}个文件正在上传<i style="float:right">◣</i>
+        </div>
+        <div class="item" v-for="item in uploadList">
+          <div class="progress">
+            <div class="loaded" style="width:{{item.progress}}%;"></div>
+          </div>
+          <div class="filename">
+            {{item.file.name}}-<span class="status">{{item.status}}</span>
+          </div>
+          
+        </div>
+      </div>
   </div>
-  <script id="uploader-template" type="text/html">
-    <div class="upload-container" v-on:drop="uploadFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
-      <div v-for="item in uploadQueue">{{item.name}}</div>
-    </div>
-  </script>
   <script src="https://npmcdn.com/vue@1.0.26/dist/vue.min.js"></script>
   <script src="https://npmcdn.com/vue-resource@0.9.3/dist/vue-resource.min.js"></script>
   <script src="/static/uploader.js"></script>
