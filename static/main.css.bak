@@ -24,49 +24,17 @@ body {
   right: 0px;
   height: 40px;
 }
-.header > .title,
-.header .menu,
-.header .detail {
-  display: inline-block;
-}
-.header > .title {
-  height: 40px;
-  line-height: 40px;
-  font-size: 20px;
-  color: #66ccff;
-  margin: 0px;
-  padding: 0px 20px;
-}
-.header > .menu {
+.header .menu {
   list-style: none;
   margin: 0px;
   padding: 0px;
 }
-.header > .menu > li {
+.header .menu > li {
   display: inline-block;
 }
-.header > .menu > li > a,
-.header > .menu > li span {
+.header .menu > li > a {
   height: 40px;
   line-height: 40px;
-  text-decoration: none;
-  padding: 0px 10px;
-}
-.header > .menu > li > a > :hover,
-.header > .menu > li span > :hover {
-  background-color: #eee;
-}
-.header > .menu > li > a {
-  color: #4285f4;
-}
-.header > .menu > li > span {
-  color: #999;
-}
-.header > .detail {
-  float: right;
-  height: 40px;
-  line-height: 40px;
-  padding: 0px 20px;
 }
 .list-container {
   position: absolute;

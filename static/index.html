@@ -7,30 +7,60 @@
 
 <body>
   <div id="app">
-    <div class="list-container" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
+    <div class="header">
+      <h1 class="title">QNRM</h1>
+      <ul class="menu">
+        <li>
+          <a href="">全选</a>
+        </li>
+        <li>
+          <a href="">反选</a>
+        </li>
+        <li>
+          <span>复制</span>
+        </li>
+        <li>
+          <a href="">移动</a>
+        </li>
+        <li>
+          <a href="">粘帖</a>
+        </li>
+      </ul>
+      <div class="detail">
+        2个文件夹 共 345 个文件 
+      </div>
+    </div>
+    <div class="list-container" v-on:click.self="clearSelectStatus" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
 
-      <div class="preview" v-for="item in list|orderBy  'putTime' -1" :transition="'expand'">
+      <div class="preview" v-bind:class="{ 'selected': item.selected }" v-for="item in list|orderBy  'putTime' -1" v-on:click="toggleSelectStatus(item)">
         <div class="image-wrapper">
           <img class="image" src="{{item|filePreview}}" />
         </div>
-        <div class="filename">{{item.key}}</div>
+        <div class="filename">
+          <span>{{item.key}}</span>
+        </div>
       </div>
 
     </div>
-    <div class="wait-list-container">
-        <div class="toggle">
-           {{uploadList.length}}个文件正在上传<i style="float:right">◣</i>
-        </div>
-        <div class="item" v-for="item in uploadList">
-          <div class="progress">
-            <div class="loaded" style="width:{{item.progress}}%;"></div>
-          </div>
-          <div class="filename">
-            {{item.file.name}}-<span class="status">{{item.status}}</span>
-          </div>
-          
-        </div>
+    <div class="wait-list-container" v-bind:class="{'show':waitListContainerVisual}" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
+      <div class="toggle" v-on:click="toggleWaitListContainer">
+        <span v-if="waitUploadListCount!=0">
+            上传中:{{waitUploadListCount}}<i style="float:right">●</i>
+        </span>
+        <span v-else>
+            没有上传中的文件<i style="float:right">●</i>
+        </span>
       </div>
+      <div class="item" v-for="item in uploadList">
+        <div class="progress">
+          <div class="loaded" style="width:{{item.progress}}%;"></div>
+        </div>
+        <div class="filename">
+          {{item.file.name}}-<span class="status">{{item.status}}</span>
+        </div>
+
+      </div>
+    </div>
   </div>
   <script src="https://npmcdn.com/vue@1.0.26/dist/vue.min.js"></script>
   <script src="https://npmcdn.com/vue-resource@0.9.3/dist/vue-resource.min.js"></script>
