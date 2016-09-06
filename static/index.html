@@ -26,18 +26,18 @@
           <a href="">粘帖</a>
         </li>
       </ul>
+      <div class="path">当前位置:/<span v-for="item in path">{{item}}/</span></div>
       <div class="detail">
         2个文件夹 共 345 个文件 
       </div>
     </div>
     <div class="list-container" v-on:click.self="clearSelectStatus" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
-
-      <div class="preview" v-bind:class="{ 'selected': item.selected }" v-for="item in list|orderBy  'putTime' -1" v-on:click="toggleSelectStatus(item)">
+      <div class="preview" v-bind:class="{ 'selected': item.selected }" v-for="item in list|orderBy  'time' -1" v-on:click="toggleSelectStatus(item, $event)" v-on:dblclick="openItem(item)">
         <div class="image-wrapper">
           <img class="image" src="{{item|filePreview}}" />
         </div>
         <div class="filename">
-          <span>{{item.key}}</span>
+          <span>{{item.name}}</span>
         </div>
       </div>
 

@@ -62,7 +62,8 @@ body {
 .header > .menu > li > span {
   color: #999;
 }
-.header > .detail {
+.header > .detail,
+.header > .path {
   float: right;
   height: 40px;
   line-height: 40px;
