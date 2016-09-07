@@ -11,30 +11,31 @@
       <h1 class="title">QNRM</h1>
       <ul class="menu">
         <li>
-          <a href="">全选</a>
+          <a href="javascript:void(0)" v-on:click="selectAll">全选</a>
         </li>
         <li>
-          <a href="">反选</a>
+          <a href="javascript:void(0)" v-on:click="shiftSelectStatus">反选</a>
         </li>
         <li>
-          <span>复制</span>
+          <a href="javascript:void(0)" v-on:click="markSelectedItem">标记</a>
         </li>
         <li>
           <a href="">移动</a>
         </li>
         <li>
-          <a href="">粘帖</a>
+          <a href="">复制</a>
         </li>
       </ul>
       <div class="path">当前位置:/<span v-for="item in path">{{item}}/</span></div>
       <div class="detail">
-        2个文件夹 共 345 个文件 
+        {{folderCount}} 个文件夹 共 {{fileCount}} 个文件,已选择{{selectedList.length}}项,已标记{{markedList.length}}项
       </div>
     </div>
-    <div class="list-container" v-on:click.self="clearSelectStatus" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
-      <div class="preview" v-bind:class="{ 'selected': item.selected }" v-for="item in list|orderBy  'time' -1" v-on:click="toggleSelectStatus(item, $event)" v-on:dblclick="openItem(item)">
-        <div class="image-wrapper">
-          <img class="image" src="{{item|filePreview}}" />
+    <div tabindex="1" class="list-container" v-on:click.self="clearSelectStatus" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault"
+      v-on:dragover="preventDefault" v-on:keyup="keyMap($event)">
+      <div class="preview" v-bind:class="{ 'selected': item.selected }" v-for="item in list|orderBy  'time' -1" v-on:click="toggleSelectStatus(item, $event)"
+        v-on:dblclick="openFolder(item)">
+        <div class="icon" style="background-image:url({{item|filePreview}})">
         </div>
         <div class="filename">
           <span>{{item.name}}</span>
@@ -42,7 +43,8 @@
       </div>
 
     </div>
-    <div class="wait-list-container" v-bind:class="{'show':waitListContainerVisual}" v-on:drop="addFile" v-on:dragleave="preventDefault" v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
+    <div class="wait-list-container" v-bind:class="{'show':waitListContainerVisual}" v-on:drop="addFile" v-on:dragleave="preventDefault"
+      v-on:dragenter="preventDefault" v-on:dragover="preventDefault">
       <div class="toggle" v-on:click="toggleWaitListContainer">
         <span v-if="waitUploadListCount!=0">
             上传中:{{waitUploadListCount}}<i style="float:right">●</i>
@@ -58,7 +60,6 @@
         <div class="filename">
           {{item.file.name}}-<span class="status">{{item.status}}</span>
         </div>
-
       </div>
     </div>
   </div>

@@ -32,7 +32,7 @@ new Vue({
         name: 'root',
         type: 'folder',
         list: []
-      }
+      },
     }
   },
   ready() {
@@ -62,16 +62,19 @@ new Vue({
           })
         } else {
           folder = {
+            parent: parent,
             name: name,
             type: 'folder',
             list: [],
-            selected: false
+            selected: false,
+            mark: false
           }
           parent.list.push(folder)
         }
         return buildFolder(folder, path)
       }
       this.$http.get('/file').then(function (response) {
+        this.root.list = []
         for (var i = 0;i < response.data.items.length;i++) {
           var item = response.data.items[i]
           var path = item.key.split('/')
@@ -79,6 +82,7 @@ new Vue({
           console.log(path + '|' + name)
           var folder = buildFolder(this.root, path)
           folder.list.push({
+            parent: folder,
             name: name,
             type: 'file',
             key: item.key,
@@ -86,7 +90,8 @@ new Vue({
             time: item.putTime,
             mimeType: item.mimeType,
             hash: item.hash,
-            selected: false
+            selected: false,
+            mark: false
           })
         }
       // this.$log(this.root)
@@ -128,6 +133,25 @@ new Vue({
         self.loadList()
         console.log('done')
       })
+    },
+    copy: function (item, targetFolder) {
+      function getFullPath (item) {
+        if (item.parent) {
+          return getFullPath(item.parent) + '/' + item.name
+        } else {
+          return ''
+        }
+      }
+      var source = item.key
+      var target = getFullPath(targetFolder) + '/' + item.name
+      console.log(item.name)
+      console.log(target)
+      // return this.$http.post('/file',{
+      //   operation:'copy'
+
+      // }).then(function (response) {
+
+    // })
     },
     /**
      * 切换选中状态
@@ -183,10 +207,40 @@ new Vue({
     preventDefault: function (event) {
       event.preventDefault()
     },
-    openItem:function(item){
-      if(item.type==='folder'){
+    /**
+     * 打开文件夹
+     */
+    openFolder: function (item) {
+      if (item.type === 'folder') {
         this.path.push(item.name)
       }
+    },
+    /**
+     * 处理按键事件
+     */
+    keyMap: function (event) {
+      if (event.type === 'keyup' && event.ctrlKey) {
+        if (event.keyCode === 65) {
+          this.selectAll()
+        }
+      }
+    },
+    /**
+     * 标记选中文件(准备移动或复制)
+     */
+    markSelectedItem: function () {
+      this.clearMark()
+      this.selectedList.forEach(function (item) {
+        item.mark = true
+      })
+    },
+    /**
+     * 清除所有标记
+     */
+    clearMark: function () {
+      this.list.forEach(function (item) {
+        item.mark = false
+      })
     }
   },
   computed: {
@@ -207,17 +261,43 @@ new Vue({
         return tempFolder.list
       }
     },
+    /**
+     * 当前目录的文件夹数
+     */
+    folderCount: function () {
+      return this.list.filter(function (item) {
+        return item.type === 'folder'
+      }).length
+    },
+    /**
+     * 当前目录文件数
+     */
+    fileCount: function () {
+      return this.list.filter(function (item) {
+        return item.type === 'file'
+      }).length
+    },
+    /**
+     * 等待上传的文件数量
+     */
     waitUploadListCount: function () {
       var list = this.uploadList.filter(function (item) {
         return item.complete === false
       })
       return list.length
     },
-    selectedListCount: function () {
-      var list = this.list.filter(function (item) {
+    /**
+     * 以选择的文件列表
+     */
+    selectedList: function () {
+      return this.list.filter(function (item) {
         return item.selected === true
       })
-      return list.length
+    },
+    markedList: function () {
+      return this.list.filter(function (item) {
+        return item.mark === true
+      })
     }
   }
 })

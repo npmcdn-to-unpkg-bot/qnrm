@@ -28,7 +28,28 @@ class FileHandler(ApiHandler):
         self.write(ret)
    
     
-  
+  def post(self):
+    operation = self.get_body_argument('operation')
+    source = self.get_body_argument('source')
+    target = self.get_body_argument('target')
+    
+    q = qiniu.Auth(config.access_key, config.secret_key)
+    bucket = qiniu.BucketManager(q)
+    if operation == 'copy':
+      ret, info = bucket.copy(config.bucket_name,source,config.bucket_name,target)
+      if ret is None:
+        print(info)
+        self.write_error(503)
+      else:
+        self.write(ret)
+    elif operation == 'move':
+      ret, info = bucket.move(config.bucket_name,source,config.bucket_name,target)
+      if ret is None:
+        print(info)
+        self.write_error(503)
+      else:
+        self.write(ret)
+
   def put(self):
     if self.request.files.get('file') is not None:
       files = self.request.files['file']
