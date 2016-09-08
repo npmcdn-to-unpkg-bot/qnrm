@@ -134,6 +134,11 @@ new Vue({
         console.log('done')
       })
     },
+    copyMarkedItem:function(targetFolder){
+      this.markedList.forEach(function(item){
+        this.copy(item,targetFolder)
+      })
+    },
     copy: function (item, targetFolder) {
       function getFullPath (item) {
         if (item.parent) {
