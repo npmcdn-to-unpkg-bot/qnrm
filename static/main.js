@@ -134,6 +134,9 @@ new Vue({
         console.log('done')
       })
     },
+    up:function(){
+      this.path.shift()
+    },
     copyMarkedItem:function(targetFolder){
       this.markedList.forEach(function(item){
         this.copy(item,targetFolder)
